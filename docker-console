@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+basedir=`echo ${PWD##*/} | sed 's/-//g'`
+
+service=php
+
+container="${basedir}_${service}_1"
+if [ "$#" -ge 1 ]; then
+    docker exec -u $(whoami) -it ${container} "$@"
+else
+    docker exec -u $(whoami) -it ${container} bash
+fi

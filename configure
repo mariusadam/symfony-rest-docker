@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+OS=$(uname -s)
+
+##
+## Docker
+##
+cp .env.dist .env
+
+# Sed commands were not working on mac osx
+# http://stackoverflow.com/questions/34596156/sed-commands-working-on-ubuntu-but-not-on-osx
+# Note: -i "" does not work on Ubuntu Linux.
+if [ "${OS}" == 'Darwin' ]; then
+    sed -i "" -e "s/{unix_username}/$(id -un)/" .env
+    sed -i "" -e "s/{unix_group}/$(id -gn)/" .env
+    sed -i "" -e "s/{unix_uid}/$(id -u)/" .env
+    sed -i "" -e "s/{unix_gid}/$(id -g)/" .env
+else
+    sed -i .env -e "s/{unix_username}/$(id -un)/"
+    sed -i .env -e "s/{unix_group}/$(id -gn)/"
+    sed -i .env -e "s/{unix_uid}/$(id -u)/"
+    sed -i .env -e "s/{unix_gid}/$(id -g)/"
+fi
